@@ -32,7 +32,7 @@ async function startServer() {
             content: prompt
           }
         ],
-        model: "llama-3.3-70b-versatile",
+        model: "llama3-70b-8192",
       });
 
       res.json({ text: completion.choices[0]?.message?.content || "" });
