@@ -21,8 +21,8 @@ function MarkerWithInfoWindow({ parcel }: { parcel: Parcel }) {
         <InfoWindow anchor={marker} onCloseClick={() => setInfoWindowShown(false)} pixelOffset={[0, -5]}>
           <div className="text-zinc-900 p-1">
             <h4 className="font-bold text-sm mb-1">{parcel.id}</h4>
-            <p className="text-xs mb-1"><strong>Owner:</strong> {parcel.owner}</p>
-            <p className="text-xs mb-1"><strong>Area:</strong> {parcel.area} acres</p>
+            <p className="text-xs mb-1"><strong>Owner:</strong> {parcel.landOwner}</p>
+            <p className="text-xs mb-1"><strong>Area:</strong> {parcel.areaAcres} acres</p>
             <p className="text-xs">
               <strong>Risk:</strong> 
               <span className={`ml-1 font-semibold ${parcel.riskLevel === 'High' ? 'text-red-600' : parcel.riskLevel === 'Medium' ? 'text-amber-600' : 'text-emerald-600'}`}>
