@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import AppLayout from '../components/Layout';
 import { staticParcels } from '../lib/data';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, FileText, Scale, User, Calendar, Clock } from 'lucide-react';
+import { ArrowLeft, MapPin, FileText, Scale, User, Calendar, Clock, Sparkles } from 'lucide-react';
 import { format } from 'date-fns';
 import MapView from '../components/ParcelMap';
 
@@ -12,6 +12,34 @@ export default function ParcelDetails() {
   const id = params.id as string;
   
   const parcel = useMemo(() => staticParcels.find(p => p.id === id), [id]);
+
+  const [aiInsight, setAiInsight] = useState('');
+  const [loadingAi, setLoadingAi] = useState(false);
+
+  useEffect(() => {
+    if (!parcel) return;
+    
+    async function fetchAiInsight() {
+      setLoadingAi(true);
+      try {
+        const response = await fetch('/api/ai/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            prompt: `Analyze the risk for this land parcel: Risk Level: ${parcel.riskLevel} (${parcel.riskScore}/100), Legal Status: ${parcel.legalDisputeStatus}, Compensation: ${parcel.compensationStatus}, Main Risk Factor: ${parcel.topRiskFactors[0]?.factor || 'None'}. Provide a brief 2-sentence tactical recommendation on how to mitigate this specific risk.`,
+            systemPrompt: "You are an expert real estate acquisition analyst AI."
+          })
+        });
+        const data = await response.json();
+        if (data.text) setAiInsight(data.text);
+      } catch (e) {
+        console.error('Failed to fetch AI insight', e);
+      } finally {
+        setLoadingAi(false);
+      }
+    }
+    fetchAiInsight();
+  }, [parcel]);
 
   if (!parcel) {
     return (
@@ -53,6 +81,19 @@ export default function ParcelDetails() {
         </div>
       </div>
       
+      {/* AI Recommendation Banner */}
+      <div className="bg-gradient-to-r from-blue-900/20 to-emerald-900/20 border border-blue-900/30 rounded-xl p-5 mb-6 flex items-start gap-4">
+        <div className="bg-blue-500/20 p-2 rounded text-blue-400">
+          <Sparkles className="w-5 h-5" />
+        </div>
+        <div className="flex-1">
+          <h3 className="text-xs font-bold text-blue-400 uppercase tracking-widest mb-2">AI Tactical Recommendation</h3>
+          <p className="text-sm text-zinc-300 leading-relaxed">
+            {loadingAi ? 'Synthesizing tactical recommendation...' : (aiInsight || 'AI analysis temporarily unavailable. Configure GROQ_API_KEY.')}
+          </p>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* Left Column: Details & Map */}
         <div className="xl:col-span-2 space-y-6">

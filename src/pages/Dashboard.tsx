@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import AppLayout from '../components/Layout';
 import { staticParcels } from '../lib/data';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, AreaChart, Area } from 'recharts';
-import { AlertTriangle, Clock, ShieldAlert, Map as MapIcon } from 'lucide-react';
+import { AlertTriangle, Clock, ShieldAlert, Map as MapIcon, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const COLORS = {
@@ -31,6 +31,32 @@ export default function Dashboard() {
     });
     return { total, acquired, highRisk, mediumRisk, avgDelay, activeIssues };
   }, [parcels]);
+
+  const [aiSummary, setAiSummary] = useState('');
+  const [loadingAi, setLoadingAi] = useState(false);
+
+  useEffect(() => {
+    async function fetchAiSummary() {
+      setLoadingAi(true);
+      try {
+        const response = await fetch('/api/ai/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            prompt: `Based on the following stats: Total Parcels: ${stats.total}, High Risk: ${stats.highRisk}, Avg Delay: ${stats.avgDelay} days, Active Issues: ${stats.activeIssues}. Summarize the project health in 2-3 short, highly actionable sentences. Keep it professional and direct.`,
+            systemPrompt: "You are an expert land acquisition and risk analysis AI assistant."
+          })
+        });
+        const data = await response.json();
+        if (data.text) setAiSummary(data.text);
+      } catch (e) {
+        console.error('Failed to fetch AI summary', e);
+      } finally {
+        setLoadingAi(false);
+      }
+    }
+    fetchAiSummary();
+  }, [stats]);
 
   const riskDistributionData = useMemo(() => [
     { name: 'Low Risk', value: parcels.filter(p => p.riskLevel === 'Low').length, color: COLORS.low },
@@ -82,6 +108,19 @@ export default function Dashboard() {
            <span className="px-3 py-1.5 rounded bg-red-950/30 text-[10px] font-bold text-red-500 uppercase tracking-widest border border-red-900/50">
              Project Health: AT RISK
            </span>
+        </div>
+      </div>
+
+      {/* AI Summary Banner */}
+      <div className="bg-gradient-to-r from-blue-900/20 to-purple-900/20 border border-blue-900/30 rounded-lg p-5 mb-6 flex items-start gap-4">
+        <div className="bg-blue-500/20 p-2 rounded text-blue-400">
+          <Sparkles className="w-5 h-5" />
+        </div>
+        <div className="flex-1">
+          <h3 className="text-xs font-bold text-blue-400 uppercase tracking-widest mb-2">AI Executive Summary</h3>
+          <p className="text-sm text-zinc-300 leading-relaxed">
+            {loadingAi ? 'Analyzing project state via AI...' : (aiSummary || 'AI analysis temporarily unavailable. Configure GROQ_API_KEY.')}
+          </p>
         </div>
       </div>
       

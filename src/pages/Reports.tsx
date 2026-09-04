@@ -1,8 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import AppLayout from '../components/Layout';
-import { FileText, Download, BarChart2, PieChart as PieChartIcon } from 'lucide-react';
+import { FileText, Download, BarChart2, PieChart as PieChartIcon, Sparkles, X } from 'lucide-react';
+import { staticParcels } from '../lib/data';
+import Markdown from 'react-markdown';
 
 export default function ReportsPage() {
+  const [generatingAiReport, setGeneratingAiReport] = useState(false);
+  const [aiReportContent, setAiReportContent] = useState('');
+  const [showModal, setShowModal] = useState(false);
+
+  const handleGenerateAiReport = async () => {
+    setShowModal(true);
+    setGeneratingAiReport(true);
+    setAiReportContent('');
+    
+    const highRiskCount = staticParcels.filter(p => p.riskLevel === 'High').length;
+    const avgDelay = Math.round(staticParcels.reduce((acc, p) => acc + p.predictedDelayDays, 0) / staticParcels.length);
+    const activeDisputes = staticParcels.filter(p => p.legalDisputeStatus === 'Active Case').length;
+
+    try {
+      const response = await fetch('/api/ai/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt: `Write a comprehensive, professional project status report based on the following metrics: Total Parcels: ${staticParcels.length}, High Risk Parcels: ${highRiskCount}, Average Predicted Delay: ${avgDelay} days, Active Legal Disputes: ${activeDisputes}. Use Markdown format with sections for Executive Summary, Risk Assessment, and Recommendations.`,
+          systemPrompt: "You are a senior real estate project manager and data analyst AI."
+        })
+      });
+      const data = await response.json();
+      if (data.text) {
+        setAiReportContent(data.text);
+      }
+    } catch (e) {
+      console.error('Failed to generate AI report', e);
+      setAiReportContent('Error generating report. Ensure GROQ_API_KEY is configured.');
+    } finally {
+      setGeneratingAiReport(false);
+    }
+  };
+
   const reports = [
     { id: 1, name: 'Project Alpha - Monthly Risk Assessment', date: 'Oct 01, 2024', type: 'PDF' },
     { id: 2, name: 'Q3 Delay Predictions & Interventions', date: 'Sep 30, 2024', type: 'PDF' },
@@ -15,12 +51,17 @@ export default function ReportsPage() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-light tracking-tight text-white">Reports</h1>
+            <h1 className="text-2xl font-light tracking-tight text-white flex items-center gap-2">
+              Reports
+            </h1>
             <p className="text-sm text-zinc-400 mt-1">Generate and download analytical reports for stakeholders.</p>
           </div>
-          <button className="px-4 py-2 bg-amber-700 hover:bg-amber-600 text-white text-sm font-medium rounded-md transition-colors shadow-sm flex items-center gap-2">
-            <FileText className="w-4 h-4" />
-            Generate New Report
+          <button 
+            onClick={handleGenerateAiReport}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium rounded-md transition-colors shadow-sm flex items-center gap-2"
+          >
+            <Sparkles className="w-4 h-4" />
+            Generate AI Report
           </button>
         </div>
 
@@ -82,6 +123,43 @@ export default function ReportsPage() {
           </div>
         </div>
       </div>
+
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className="bg-[#111111] border border-zinc-800 rounded-xl w-full max-w-3xl max-h-[80vh] flex flex-col shadow-2xl">
+            <div className="p-4 border-b border-zinc-800 flex items-center justify-between">
+              <h2 className="text-white font-medium flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-blue-500" /> AI Generated Project Report
+              </h2>
+              <button onClick={() => setShowModal(false)} className="p-1 hover:bg-zinc-800 rounded text-zinc-400">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-6 overflow-y-auto flex-1 text-sm text-zinc-300 leading-relaxed">
+              {generatingAiReport ? (
+                <div className="flex flex-col items-center justify-center py-12">
+                  <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                  <p className="text-zinc-400">Synthesizing report using Groq AI...</p>
+                </div>
+              ) : (
+                <div className="prose prose-invert prose-sm max-w-none prose-headings:text-white prose-a:text-blue-400">
+                  <Markdown>{aiReportContent}</Markdown>
+                </div>
+              )}
+            </div>
+            {!generatingAiReport && aiReportContent && (
+              <div className="p-4 border-t border-zinc-800 flex justify-end">
+                <button 
+                  onClick={() => setShowModal(false)}
+                  className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white text-sm font-medium rounded-md transition-colors shadow-sm"
+                >
+                  Close Report
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </AppLayout>
   );
 }
