@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
-import { Groq } from "groq-sdk";
+import { GoogleGenAI } from "@google/genai";
 
 async function startServer() {
   const app = express();
@@ -9,35 +9,29 @@ async function startServer() {
 
   app.use(express.json());
 
-  // AI Route using Groq
+  // AI Route using Gemini
   app.post("/api/ai/generate", async (req, res) => {
     try {
       const { prompt, systemPrompt } = req.body;
       
-      const apiKey = process.env.GROQ_API_KEY;
+      const apiKey = process.env.GEMINI_API_KEY;
       if (!apiKey) {
-        return res.status(500).json({ error: "GROQ_API_KEY environment variable is missing" });
+        return res.status(500).json({ error: "GEMINI_API_KEY environment variable is missing" });
       }
 
-      const groq = new Groq({ apiKey });
+      const ai = new GoogleGenAI({ apiKey });
       
-      const completion = await groq.chat.completions.create({
-        messages: [
-          {
-            role: "system",
-            content: systemPrompt || "You are a helpful assistant."
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        model: "llama3-70b-8192",
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: prompt,
+        config: {
+          systemInstruction: systemPrompt || "You are a helpful assistant."
+        }
       });
 
-      res.json({ text: completion.choices[0]?.message?.content || "" });
+      res.json({ text: response.text || "" });
     } catch (error: any) {
-      console.error("Groq AI Error:", error);
+      console.error("Gemini AI Error:", error);
       res.status(500).json({ error: error.message || "Failed to generate AI response" });
     }
   });
