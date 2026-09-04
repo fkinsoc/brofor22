@@ -1,0 +1,64 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    
+    // Primitive Definition
+    function isSignedIn() { 
+      return request.auth != null; 
+    }
+    function existing() { 
+      return resource.data; 
+    }
+    function incoming() { 
+      return request.resource.data; 
+    }
+    function isAdmin() { 
+      return isSignedIn() && exists(/databases/$(database)/documents/users/$(request.auth.uid)) && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'; 
+    }
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+
+    // Validation Blueprint for User
+    function isValidUser(data) {
+      return data.keys().hasAll(['email', 'role', 'name']) &&
+             data.keys().size() == 3 &&
+             data.email is string && data.email.size() <= 254 &&
+             data.role is string && (data.role == 'admin' || data.role == 'user') &&
+             data.name is string && data.name.size() <= 128;
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      // Users can read their own document, admins can read all
+      allow get: if isValidId(userId) && (isOwner(userId) || isAdmin());
+      // Admins can list users
+      allow list: if isAdmin();
+      
+      // Users can create their own document
+      allow create: if isValidId(userId) && 
+                       isOwner(userId) && 
+                       isValidUser(incoming());
+                       
+      // Users can update their name, admins can update roles.
+      // (No explicit update action defined in app yet, but we allow basic changes)
+      allow update: if isValidId(userId) && isSignedIn() && (
+        // Admin full update (must be valid)
+        (isAdmin() && isValidUser(incoming())) ||
+        // User updating their own name
+        (isOwner(userId) && incoming().diff(existing()).affectedKeys().hasOnly(['name']) && isValidUser(incoming()))
+      );
+      
+      // No deletes allowed
+      allow delete: if false;
+    }
+  }
+}

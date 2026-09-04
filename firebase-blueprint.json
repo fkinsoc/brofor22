@@ -1,0 +1,35 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and RBAC role definition.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "The user's email address.",
+          "maxLength": 254
+        },
+        "role": {
+          "type": "string",
+          "description": "The user's role in the system.",
+          "enum": ["admin", "user"]
+        },
+        "name": {
+          "type": "string",
+          "description": "The user's display name.",
+          "maxLength": 128
+        }
+      },
+      "required": ["email", "role", "name"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/User"
+      },
+      "description": "Stores user profiles and roles, accessed by the user's UID."
+    }
+  }
+}
