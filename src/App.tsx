@@ -12,6 +12,7 @@ import ReportsPage from './pages/Reports';
 import LogsPage from './pages/Logs';
 import SettingsPage from './pages/Settings';
 import LoginPage from './pages/Login';
+import LegalPage from './pages/Legal';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/logs" element={<LogsPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/legal" element={<LegalPage />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

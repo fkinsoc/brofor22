@@ -62,7 +62,7 @@ export default function LogsPage() {
       case 'WARN': return 'text-amber-400 bg-amber-500/10 border-amber-500/20';
       case 'ERROR': return 'text-red-400 bg-red-500/10 border-red-500/20';
       case 'SYSTEM': return 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
-      default: return 'text-zinc-400 bg-zinc-500/10 border-zinc-500/20';
+      default: return 'text-zinc-500 dark:text-zinc-400 bg-zinc-500/10 border-zinc-500/20';
     }
   };
 
@@ -71,28 +71,28 @@ export default function LogsPage() {
       <div className="flex flex-col h-[calc(100vh-6rem)]">
         <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-light tracking-tight text-white flex items-center gap-3">
-              <TerminalSquare className="w-6 h-6 text-zinc-400" /> System Logs
+            <h1 className="text-2xl font-light tracking-tight text-text-primary dark:text-white flex items-center gap-3">
+              <TerminalSquare className="w-6 h-6 text-zinc-500 dark:text-zinc-400" /> System Logs
             </h1>
-            <p className="text-sm text-zinc-500 mt-1">Real-time application execution and error logs.</p>
+            <p className="text-sm text-text-secondary dark:text-zinc-500 mt-1">Real-time application execution and error logs.</p>
           </div>
           
           <div className="flex items-center gap-2">
-            <button className="px-3 py-1.5 bg-zinc-900 border border-zinc-700 text-zinc-300 text-xs font-bold rounded uppercase tracking-wider hover:bg-zinc-800 transition-colors flex items-center gap-2">
+            <button className="px-3 py-1.5 bg-zinc-900 border border-zinc-700 text-zinc-600 dark:text-zinc-300 text-xs font-bold rounded uppercase tracking-wider hover:bg-zinc-800 transition-colors flex items-center gap-2">
               <Download className="w-3.5 h-3.5" /> Export Logs
             </button>
           </div>
         </div>
         
-        <div className="flex-1 bg-[#111111] border border-zinc-800 rounded-xl flex flex-col overflow-hidden">
+        <div className="flex-1 bg-background-secondary dark:bg-[#111111] border border-border-subtle dark:border-zinc-800 rounded-xl flex flex-col overflow-hidden">
           {/* Toolbar */}
-          <div className="p-3 border-b border-zinc-800 flex justify-between items-center bg-[#0A0A0A]">
+          <div className="p-3 border-b border-border-subtle dark:border-zinc-800 flex justify-between items-center bg-background-primary dark:bg-[#0A0A0A]">
             <div className="flex items-center gap-2">
-              <Filter className="w-4 h-4 text-zinc-500 ml-2" />
+              <Filter className="w-4 h-4 text-text-secondary dark:text-zinc-500 ml-2" />
               <select
                 value={filterLevel}
                 onChange={(e) => setFilterLevel(e.target.value as any)}
-                className="bg-transparent text-xs text-zinc-300 border-none focus:ring-0 cursor-pointer pr-8 py-1 uppercase tracking-wider font-bold outline-none"
+                className="bg-transparent text-xs text-zinc-600 dark:text-zinc-300 border-none focus:ring-0 cursor-pointer pr-8 py-1 uppercase tracking-wider font-bold outline-none"
               >
                 <option value="ALL">All Levels</option>
                 <option value="INFO">Info</option>
@@ -104,7 +104,7 @@ export default function LogsPage() {
             
             <div className="flex items-center gap-2 mr-2">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Live Stream</span>
+              <span className="text-[10px] text-text-secondary dark:text-zinc-500 uppercase tracking-widest font-bold">Live Stream</span>
             </div>
           </div>
           
@@ -120,17 +120,17 @@ export default function LogsPage() {
                     {log.level}
                   </span>
                 </div>
-                <div className="text-zinc-500 flex-shrink-0 w-32 truncate" title={log.source}>
+                <div className="text-text-secondary dark:text-zinc-500 flex-shrink-0 w-32 truncate" title={log.source}>
                   [{log.source}]
                 </div>
-                <div className="text-zinc-300 flex-1 break-words">
+                <div className="text-zinc-600 dark:text-zinc-300 flex-1 break-words">
                   {log.message}
                 </div>
               </div>
             ))}
             
             {filteredLogs.length === 0 && (
-              <div className="text-zinc-500 py-10 text-center font-sans">
+              <div className="text-text-secondary dark:text-zinc-500 py-10 text-center font-sans">
                 No logs found for the selected filter.
               </div>
             )}

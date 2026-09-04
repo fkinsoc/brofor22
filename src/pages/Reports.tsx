@@ -51,14 +51,14 @@ export default function ReportsPage() {
       <div className="max-w-6xl mx-auto">
         <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-light tracking-tight text-white flex items-center gap-2">
+            <h1 className="text-2xl font-light tracking-tight text-text-primary dark:text-white flex items-center gap-2">
               Reports
             </h1>
-            <p className="text-sm text-zinc-400 mt-1">Generate and download analytical reports for stakeholders.</p>
+            <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Generate and download analytical reports for stakeholders.</p>
           </div>
           <button 
             onClick={handleGenerateAiReport}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-medium rounded-md transition-colors shadow-sm flex items-center gap-2"
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-text-primary dark:text-white text-sm font-medium rounded-md transition-colors shadow-sm flex items-center gap-2"
           >
             <Sparkles className="w-4 h-4" />
             Generate AI Report
@@ -66,30 +66,30 @@ export default function ReportsPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-[#111111] border border-zinc-800 rounded-xl p-5 shadow-sm hover:border-amber-500/50 transition-colors cursor-pointer group">
+          <div className="bg-background-secondary dark:bg-[#111111] border border-border-subtle dark:border-zinc-800 rounded-xl p-5 shadow-sm hover:border-amber-500/50 transition-colors cursor-pointer group">
             <BarChart2 className="w-8 h-8 text-blue-500 mb-3 group-hover:text-amber-500 transition-colors" />
-            <h3 className="text-base font-semibold text-white mb-1">Project Progress Summary</h3>
-            <p className="text-xs text-zinc-400 leading-relaxed">Comprehensive overview of acquisition stages, completions, and overall health indicators.</p>
+            <h3 className="text-base font-semibold text-text-primary dark:text-white mb-1">Project Progress Summary</h3>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">Comprehensive overview of acquisition stages, completions, and overall health indicators.</p>
           </div>
-          <div className="bg-[#111111] border border-zinc-800 rounded-xl p-5 shadow-sm hover:border-amber-500/50 transition-colors cursor-pointer group">
+          <div className="bg-background-secondary dark:bg-[#111111] border border-border-subtle dark:border-zinc-800 rounded-xl p-5 shadow-sm hover:border-amber-500/50 transition-colors cursor-pointer group">
             <PieChartIcon className="w-8 h-8 text-red-500 mb-3 group-hover:text-amber-500 transition-colors" />
-            <h3 className="text-base font-semibold text-white mb-1">Risk Factors Analysis</h3>
-            <p className="text-xs text-zinc-400 leading-relaxed">Deep dive into SHAP explanations, top delay contributors, and geospatial risk hotspots.</p>
+            <h3 className="text-base font-semibold text-text-primary dark:text-white mb-1">Risk Factors Analysis</h3>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">Deep dive into SHAP explanations, top delay contributors, and geospatial risk hotspots.</p>
           </div>
-          <div className="bg-[#111111] border border-zinc-800 rounded-xl p-5 shadow-sm hover:border-amber-500/50 transition-colors cursor-pointer group">
+          <div className="bg-background-secondary dark:bg-[#111111] border border-border-subtle dark:border-zinc-800 rounded-xl p-5 shadow-sm hover:border-amber-500/50 transition-colors cursor-pointer group">
             <FileText className="w-8 h-8 text-emerald-500 mb-3 group-hover:text-amber-500 transition-colors" />
-            <h3 className="text-base font-semibold text-white mb-1">Executive Dashboard PDF</h3>
-            <p className="text-xs text-zinc-400 leading-relaxed">Ready-to-print single-page summary for high-level government and enterprise stakeholders.</p>
+            <h3 className="text-base font-semibold text-text-primary dark:text-white mb-1">Executive Dashboard PDF</h3>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">Ready-to-print single-page summary for high-level government and enterprise stakeholders.</p>
           </div>
         </div>
 
-        <div className="bg-[#111111] border border-zinc-800 rounded-xl flex flex-col overflow-hidden">
-          <div className="p-5 border-b border-zinc-800">
-            <h2 className="text-lg font-semibold text-white">Recent Reports</h2>
+        <div className="bg-background-secondary dark:bg-[#111111] border border-border-subtle dark:border-zinc-800 rounded-xl flex flex-col overflow-hidden">
+          <div className="p-5 border-b border-border-subtle dark:border-zinc-800">
+            <h2 className="text-lg font-semibold text-text-primary dark:text-white">Recent Reports</h2>
           </div>
           <div className="p-0">
             <table className="w-full text-sm text-left">
-              <thead className="text-xs text-zinc-500 uppercase bg-zinc-900/50 border-b border-zinc-800">
+              <thead className="text-xs text-text-secondary dark:text-zinc-500 uppercase bg-zinc-900/50 border-b border-border-subtle dark:border-zinc-800">
                 <tr>
                   <th className="px-6 py-4 font-semibold">Report Name</th>
                   <th className="px-6 py-4 font-semibold">Date Generated</th>
@@ -103,7 +103,7 @@ export default function ReportsPage() {
                     <td className="px-6 py-4 font-medium text-zinc-200">
                       {report.name}
                     </td>
-                    <td className="px-6 py-4 text-zinc-400">
+                    <td className="px-6 py-4 text-zinc-500 dark:text-zinc-400">
                       {report.date}
                     </td>
                     <td className="px-6 py-4">
@@ -126,32 +126,32 @@ export default function ReportsPage() {
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-[#111111] border border-zinc-800 rounded-xl w-full max-w-3xl max-h-[80vh] flex flex-col shadow-2xl">
-            <div className="p-4 border-b border-zinc-800 flex items-center justify-between">
-              <h2 className="text-white font-medium flex items-center gap-2">
+          <div className="bg-background-secondary dark:bg-[#111111] border border-border-subtle dark:border-zinc-800 rounded-xl w-full max-w-3xl max-h-[80vh] flex flex-col shadow-2xl">
+            <div className="p-4 border-b border-border-subtle dark:border-zinc-800 flex items-center justify-between">
+              <h2 className="text-text-primary dark:text-white font-medium flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-blue-500" /> AI Generated Project Report
               </h2>
-              <button onClick={() => setShowModal(false)} className="p-1 hover:bg-zinc-800 rounded text-zinc-400">
+              <button onClick={() => setShowModal(false)} className="p-1 hover:bg-zinc-800 rounded text-zinc-500 dark:text-zinc-400">
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="p-6 overflow-y-auto flex-1 text-sm text-zinc-300 leading-relaxed">
+            <div className="p-6 overflow-y-auto flex-1 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
               {generatingAiReport ? (
                 <div className="flex flex-col items-center justify-center py-12">
                   <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-                  <p className="text-zinc-400">Synthesizing report using Groq AI...</p>
+                  <p className="text-zinc-500 dark:text-zinc-400">Synthesizing report using Groq AI...</p>
                 </div>
               ) : (
-                <div className="prose prose-invert prose-sm max-w-none prose-headings:text-white prose-a:text-blue-400">
+                <div className="prose prose-invert prose-sm max-w-none prose-headings:text-text-primary dark:text-white prose-a:text-blue-400">
                   <Markdown>{aiReportContent}</Markdown>
                 </div>
               )}
             </div>
             {!generatingAiReport && aiReportContent && (
-              <div className="p-4 border-t border-zinc-800 flex justify-end">
+              <div className="p-4 border-t border-border-subtle dark:border-zinc-800 flex justify-end">
                 <button 
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white text-sm font-medium rounded-md transition-colors shadow-sm"
+                  className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-text-primary dark:text-white text-sm font-medium rounded-md transition-colors shadow-sm"
                 >
                   Close Report
                 </button>

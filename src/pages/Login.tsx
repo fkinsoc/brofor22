@@ -63,15 +63,15 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center p-4 font-sans relative overflow-hidden">
+    <div className="min-h-screen bg-background-primary dark:bg-[#0A0A0A] flex items-center justify-center p-4 font-sans relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-900/20 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-900/10 rounded-full blur-[100px] pointer-events-none"></div>
 
-      <div className="max-w-md w-full bg-[#111111]/80 backdrop-blur-xl border border-zinc-800/50 rounded-2xl p-8 shadow-2xl relative z-10">
+      <div className="max-w-md w-full bg-background-secondary dark:bg-[#111111]/80 backdrop-blur-xl border border-border-subtle dark:border-zinc-800/50 rounded-2xl p-8 shadow-2xl relative z-10">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-light text-white mb-2 tracking-tight">BRO FORESEE</h1>
-          <p className="text-[10px] text-zinc-500 uppercase tracking-[0.2em]">Secure Access Required</p>
+          <h1 className="text-3xl font-light text-text-primary dark:text-white mb-2 tracking-tight">BRO FORESEE</h1>
+          <p className="text-[10px] text-text-secondary dark:text-zinc-500 uppercase tracking-[0.2em]">Secure Access Required</p>
         </div>
         
         {error && (
@@ -82,22 +82,22 @@ export default function LoginPage() {
 
         <form onSubmit={handleEmailAuth} className="space-y-4">
           <div>
-            <label className="block text-[10px] uppercase text-zinc-500 mb-1 font-bold tracking-wider">Email Address</label>
+            <label className="block text-[10px] uppercase text-text-secondary dark:text-zinc-500 mb-1 font-bold tracking-wider">Email Address</label>
             <input 
               type="email" 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-[#0A0A0A]/50 border border-zinc-800 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-all"
+              className="w-full bg-background-primary dark:bg-[#0A0A0A]/50 border border-border-subtle dark:border-zinc-800 rounded-lg px-4 py-3 text-sm text-text-primary dark:text-white focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-all"
               required
             />
           </div>
           <div>
-            <label className="block text-[10px] uppercase text-zinc-500 mb-1 font-bold tracking-wider">Password</label>
+            <label className="block text-[10px] uppercase text-text-secondary dark:text-zinc-500 mb-1 font-bold tracking-wider">Password</label>
             <input 
               type="password" 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-[#0A0A0A]/50 border border-zinc-800 rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-all"
+              className="w-full bg-background-primary dark:bg-[#0A0A0A]/50 border border-border-subtle dark:border-zinc-800 rounded-lg px-4 py-3 text-sm text-text-primary dark:text-white focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-all"
               required
             />
           </div>
@@ -113,10 +113,10 @@ export default function LoginPage() {
 
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-zinc-800"></div>
+            <div className="w-full border-t border-border-subtle dark:border-zinc-800"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-[#111111] text-zinc-500 text-[10px] uppercase tracking-wider">Or continue with</span>
+            <span className="px-2 bg-background-secondary dark:bg-[#111111] text-text-secondary dark:text-zinc-500 text-[10px] uppercase tracking-wider">Or continue with</span>
           </div>
         </div>
 
@@ -124,7 +124,7 @@ export default function LoginPage() {
           <button
             onClick={() => handleOAuth(new GoogleAuthProvider())}
             type="button"
-            className="flex justify-center items-center py-2.5 border border-zinc-800 rounded-lg hover:bg-zinc-800/50 transition-colors"
+            className="flex justify-center items-center py-2.5 border border-border-subtle dark:border-zinc-800 rounded-lg hover:bg-zinc-800/50 transition-colors"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
@@ -136,9 +136,9 @@ export default function LoginPage() {
           <button
             onClick={() => handleOAuth(new GithubAuthProvider())}
             type="button"
-            className="flex justify-center items-center py-2.5 border border-zinc-800 rounded-lg hover:bg-zinc-800/50 transition-colors"
+            className="flex justify-center items-center py-2.5 border border-border-subtle dark:border-zinc-800 rounded-lg hover:bg-zinc-800/50 transition-colors"
           >
-            <Github className="w-5 h-5 text-zinc-300" />
+            <Github className="w-5 h-5 text-zinc-600 dark:text-zinc-300" />
           </button>
           <button
             onClick={() => {
@@ -146,7 +146,7 @@ export default function LoginPage() {
               handleOAuth(msProvider);
             }}
             type="button"
-            className="flex justify-center items-center py-2.5 border border-zinc-800 rounded-lg hover:bg-zinc-800/50 transition-colors"
+            className="flex justify-center items-center py-2.5 border border-border-subtle dark:border-zinc-800 rounded-lg hover:bg-zinc-800/50 transition-colors"
           >
             <svg className="w-5 h-5" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="1" y="1" width="9" height="9" fill="#F25022"/>
@@ -157,13 +157,18 @@ export default function LoginPage() {
           </button>
         </div>
 
-        <div className="mt-6 text-center">
+        <div className="mt-6 text-center space-y-4">
           <button 
             onClick={() => setIsLogin(!isLogin)} 
-            className="text-[10px] text-zinc-500 hover:text-white uppercase tracking-wider transition-colors"
+            className="text-[10px] text-text-secondary dark:text-zinc-500 hover:text-text-primary dark:text-white uppercase tracking-wider transition-colors"
           >
             {isLogin ? 'Need an account? Create one' : 'Already have an account? Sign in'}
           </button>
+          
+          <div className="text-[10px] text-text-secondary dark:text-zinc-600">
+            By continuing, you agree to <strong className="text-text-primary dark:text-zinc-400">Brown's Squad</strong> <br/>
+            <a href="/legal" className="underline hover:text-blue-400 transition-colors">Terms of Service</a> and <a href="/legal" className="underline hover:text-blue-400 transition-colors">Privacy Policy</a>.
+          </div>
         </div>
       </div>
     </div>

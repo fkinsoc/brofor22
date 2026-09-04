@@ -101,8 +101,8 @@ export default function Dashboard() {
     <AppLayout>
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-light tracking-tight text-white">Project Dashboard</h1>
-          <p className="text-sm text-zinc-500 mt-1">Real-time overview of land acquisition risks and delays.</p>
+          <h1 className="text-2xl font-light tracking-tight text-text-primary dark:text-white">Project Dashboard</h1>
+          <p className="text-sm text-text-secondary dark:text-zinc-500 mt-1">Real-time overview of land acquisition risks and delays.</p>
         </div>
         <div className="flex items-center gap-2">
            <span className="px-3 py-1.5 rounded bg-red-950/30 text-[10px] font-bold text-red-500 uppercase tracking-widest border border-red-900/50">
@@ -118,7 +118,7 @@ export default function Dashboard() {
         </div>
         <div className="flex-1">
           <h3 className="text-xs font-bold text-blue-400 uppercase tracking-widest mb-2">AI Executive Summary</h3>
-          <p className="text-sm text-zinc-300 leading-relaxed">
+          <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
             {loadingAi ? 'Analyzing project state via AI...' : (aiSummary || 'AI analysis temporarily unavailable. Configure GROQ_API_KEY.')}
           </p>
         </div>
@@ -126,52 +126,52 @@ export default function Dashboard() {
       
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-        <div className="bg-[#111111] border border-zinc-800 rounded-lg p-5">
+        <div className="bg-background-secondary dark:bg-[#111111] border border-border-subtle dark:border-zinc-800 rounded-lg p-5">
           <div className="flex items-center justify-between">
-            <h3 className="text-[10px] uppercase text-zinc-500 mb-1">Total Parcels</h3>
+            <h3 className="text-[10px] uppercase text-text-secondary dark:text-zinc-500 mb-1">Total Parcels</h3>
             <MapIcon className="w-4 h-4 text-zinc-600" />
           </div>
           <div className="mt-1 flex items-baseline gap-2">
-            <span className="text-3xl font-light text-white tracking-tight">{stats.total}</span>
+            <span className="text-3xl font-light text-text-primary dark:text-white tracking-tight">{stats.total}</span>
           </div>
-          <div className="mt-2 text-[10px] text-zinc-500 uppercase">
+          <div className="mt-2 text-[10px] text-text-secondary dark:text-zinc-500 uppercase">
              <span className="text-emerald-500 font-bold">{stats.acquired}</span> acquired
           </div>
         </div>
-        <div className="bg-[#111111] border border-zinc-800 rounded-lg p-5 border-l-red-500 border-l-2">
+        <div className="bg-background-secondary dark:bg-[#111111] border border-border-subtle dark:border-zinc-800 rounded-lg p-5 border-l-red-500 border-l-2">
           <div className="flex items-center justify-between">
-            <h3 className="text-[10px] uppercase text-zinc-500 mb-1">High Risk Parcels</h3>
+            <h3 className="text-[10px] uppercase text-text-secondary dark:text-zinc-500 mb-1">High Risk Parcels</h3>
             <AlertTriangle className="w-4 h-4 text-red-500 opacity-50" />
           </div>
           <div className="mt-1 flex items-baseline gap-2">
             <span className="text-3xl font-light text-red-500 tracking-tight">{stats.highRisk}</span>
           </div>
-          <div className="mt-2 text-[10px] text-zinc-500 uppercase">
+          <div className="mt-2 text-[10px] text-text-secondary dark:text-zinc-500 uppercase">
              <span className="text-amber-500 font-bold">{stats.mediumRisk}</span> medium risk
           </div>
         </div>
-        <div className="bg-[#111111] border border-zinc-800 rounded-lg p-5 border-l-amber-500 border-l-2">
+        <div className="bg-background-secondary dark:bg-[#111111] border border-border-subtle dark:border-zinc-800 rounded-lg p-5 border-l-amber-500 border-l-2">
           <div className="flex items-center justify-between">
-            <h3 className="text-[10px] uppercase text-zinc-500 mb-1">Avg Predicted Delay</h3>
+            <h3 className="text-[10px] uppercase text-text-secondary dark:text-zinc-500 mb-1">Avg Predicted Delay</h3>
             <Clock className="w-4 h-4 text-amber-500 opacity-50" />
           </div>
           <div className="mt-1 flex items-baseline gap-1">
-            <span className="text-3xl font-light text-white tracking-tight">+{stats.avgDelay}</span>
-            <span className="text-xs uppercase text-zinc-500 ml-1">days</span>
+            <span className="text-3xl font-light text-text-primary dark:text-white tracking-tight">+{stats.avgDelay}</span>
+            <span className="text-xs uppercase text-text-secondary dark:text-zinc-500 ml-1">days</span>
           </div>
-          <div className="mt-2 text-[10px] text-zinc-500 uppercase">
+          <div className="mt-2 text-[10px] text-text-secondary dark:text-zinc-500 uppercase">
              Across all active parcels
           </div>
         </div>
-        <div className="bg-[#111111] border border-zinc-800 rounded-lg p-5">
+        <div className="bg-background-secondary dark:bg-[#111111] border border-border-subtle dark:border-zinc-800 rounded-lg p-5">
           <div className="flex items-center justify-between">
-            <h3 className="text-[10px] uppercase text-zinc-500 mb-1">Active Issues</h3>
+            <h3 className="text-[10px] uppercase text-text-secondary dark:text-zinc-500 mb-1">Active Issues</h3>
             <ShieldAlert className="w-4 h-4 text-blue-500 opacity-50" />
           </div>
           <div className="mt-1 flex items-baseline gap-2">
-            <span className="text-3xl font-light text-white tracking-tight">{stats.activeIssues}</span>
+            <span className="text-3xl font-light text-text-primary dark:text-white tracking-tight">{stats.activeIssues}</span>
           </div>
-          <div className="mt-2 text-[10px] text-zinc-500 uppercase">
+          <div className="mt-2 text-[10px] text-text-secondary dark:text-zinc-500 uppercase">
              Pending resolutions
           </div>
         </div>
@@ -179,8 +179,8 @@ export default function Dashboard() {
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
         {/* Risk Distribution Chart */}
-        <div className="bg-[#111111] border border-zinc-800 rounded-xl p-6 lg:col-span-1 flex flex-col">
-          <h3 className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest border-b border-zinc-800 pb-3 mb-4">Risk Distribution</h3>
+        <div className="bg-background-secondary dark:bg-[#111111] border border-border-subtle dark:border-zinc-800 rounded-xl p-6 lg:col-span-1 flex flex-col">
+          <h3 className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest border-b border-border-subtle dark:border-zinc-800 pb-3 mb-4">Risk Distribution</h3>
           <div className="flex-1 min-h-[240px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -209,8 +209,8 @@ export default function Dashboard() {
         </div>
         
         {/* Issues by Category */}
-        <div className="bg-[#111111] border border-zinc-800 rounded-xl p-6 lg:col-span-2 flex flex-col">
-          <h3 className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest border-b border-zinc-800 pb-3 mb-4">Issues by Category</h3>
+        <div className="bg-background-secondary dark:bg-[#111111] border border-border-subtle dark:border-zinc-800 rounded-xl p-6 lg:col-span-2 flex flex-col">
+          <h3 className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest border-b border-border-subtle dark:border-zinc-800 pb-3 mb-4">Issues by Category</h3>
           <div className="flex-1 min-h-[240px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
@@ -233,8 +233,8 @@ export default function Dashboard() {
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Acquisition Progress */}
-        <div className="bg-[#111111] border border-zinc-800 rounded-xl p-6 flex flex-col">
-          <h3 className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest border-b border-zinc-800 pb-3 mb-4">Parcels by Stage</h3>
+        <div className="bg-background-secondary dark:bg-[#111111] border border-border-subtle dark:border-zinc-800 rounded-xl p-6 flex flex-col">
+          <h3 className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest border-b border-border-subtle dark:border-zinc-800 pb-3 mb-4">Parcels by Stage</h3>
           <div className="flex-1 min-h-[256px]"> 
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
@@ -260,14 +260,14 @@ export default function Dashboard() {
         </div>
         
         {/* Highest Risk Parcels List */}
-        <div className="bg-[#111111] border border-zinc-800 rounded-xl flex flex-col overflow-hidden min-h-[300px]">
-          <div className="p-6 border-b border-zinc-800 flex justify-between items-center">
-            <h3 className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Critical Parcels Watchlist</h3>
+        <div className="bg-background-secondary dark:bg-[#111111] border border-border-subtle dark:border-zinc-800 rounded-xl flex flex-col overflow-hidden min-h-[300px]">
+          <div className="p-6 border-b border-border-subtle dark:border-zinc-800 flex justify-between items-center">
+            <h3 className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest">Critical Parcels Watchlist</h3>
             <Link to="/parcels" className="text-[10px] uppercase font-bold text-amber-500 hover:text-amber-400 tracking-wider">View All</Link>
           </div>
           <div className="flex-1 overflow-y-auto p-0">
             <table className="w-full text-sm text-left">
-              <thead className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest bg-zinc-900/30 border-b border-zinc-800 sticky top-0">
+              <thead className="text-[10px] font-bold text-text-secondary dark:text-zinc-500 uppercase tracking-widest bg-zinc-900/30 border-b border-border-subtle dark:border-zinc-800 sticky top-0">
                 <tr>
                   <th className="px-6 py-4">Parcel ID</th>
                   <th className="px-6 py-4">Risk Score</th>
@@ -278,8 +278,8 @@ export default function Dashboard() {
               <tbody className="divide-y divide-zinc-800">
                 {parcels.filter(p => p.riskLevel === 'High').sort((a,b) => b.riskScore - a.riskScore).slice(0, 5).map((parcel) => (
                   <tr key={parcel.id} className="hover:bg-zinc-800/20 transition-colors">
-                    <td className="px-6 py-4 font-medium text-white">
-                      <Link to={`/parcels/${parcel.id}`} className="hover:text-zinc-300">
+                    <td className="px-6 py-4 font-medium text-text-primary dark:text-white">
+                      <Link to={`/parcels/${parcel.id}`} className="hover:text-zinc-600 dark:text-zinc-300">
                         {parcel.id}
                       </Link>
                     </td>
@@ -288,8 +288,8 @@ export default function Dashboard() {
                         {parcel.riskScore}/100
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-zinc-400 text-xs uppercase tracking-wide">+{parcel.predictedDelayDays} days</td>
-                    <td className="px-6 py-4 text-zinc-400 text-xs truncate max-w-[120px]" title={parcel.topRiskFactors[0]?.factor}>
+                    <td className="px-6 py-4 text-zinc-500 dark:text-zinc-400 text-xs uppercase tracking-wide">+{parcel.predictedDelayDays} days</td>
+                    <td className="px-6 py-4 text-zinc-500 dark:text-zinc-400 text-xs truncate max-w-[120px]" title={parcel.topRiskFactors[0]?.factor}>
                       {parcel.topRiskFactors[0]?.factor || 'N/A'}
                     </td>
                   </tr>

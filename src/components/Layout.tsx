@@ -12,8 +12,12 @@ import {
   LogOut,
   Activity,
   CheckCircle2,
-  X
+  X,
+  Sun,
+  Moon,
+  Shield
 } from 'lucide-react';
+import Chatbot from './Chatbot';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../lib/auth-context';
 import { auth } from '../lib/firebase';
@@ -26,6 +30,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains('dark'));
   const location = useLocation();
   const navigate = useNavigate();
   const { user, role, loading } = useAuth();
@@ -46,6 +51,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  const toggleTheme = () => {
+    setIsDark(prev => {
+      const next = !prev;
+      if (next) document.documentElement.classList.add('dark');
+      else document.documentElement.classList.remove('dark');
+      return next;
+    });
+  };
 
   const handleExportPDF = async () => {
     setIsExporting(true);
@@ -128,7 +142,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   ];
 
   if (loading || !user) {
-    return <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center"><div className="w-8 h-8 rounded-full border-2 border-blue-500 border-t-transparent animate-spin" /></div>;
+    return <div className="min-h-screen bg-background-primary dark:bg-[#0A0A0A] flex items-center justify-center"><div className="w-8 h-8 rounded-full border-2 border-blue-500 border-t-transparent animate-spin" /></div>;
   }
 
   return (
@@ -140,7 +154,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-[#0A0A0A]/80 backdrop-blur-2xl border-r border-white/5 flex flex-col transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:static lg:block transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-2xl`}>
+      <div className={`fixed inset-y-0 left-0 z-50 w-64 bg-background-primary dark:bg-[#0A0A0A]/80 backdrop-blur-2xl border-r border-white/5 flex flex-col transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:static lg:block transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] shadow-2xl`}>
         <div className="p-6 border-b border-white/5 flex flex-col justify-center h-20">
           <div className="text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-400 font-bold text-xl tracking-tight">BRO FORESEE</div>
           <div className="text-[9px] text-blue-400 font-bold uppercase tracking-[0.25em] mt-1">Predictive AI Engine</div>
@@ -155,8 +169,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                 onClick={() => setSidebarOpen(false)}
                 className={`relative px-4 py-2.5 text-sm flex items-center gap-3 rounded-lg transition-all duration-300 group overflow-hidden ${
                   isActive
-                    ? 'text-white font-medium bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]'
-                    : 'text-zinc-400 hover:text-white hover:bg-white/5'
+                    ? 'text-text-primary dark:text-white font-medium bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]'
+                    : 'text-zinc-500 dark:text-zinc-400 hover:text-text-primary dark:text-white hover:bg-white/5'
                 }`}
               >
                 {isActive && (
@@ -172,16 +186,19 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             )
           })}
         </nav>
-        <div className="p-4 mt-auto border-t border-white/5">
+        <div className="p-4 mt-auto border-t border-white/5 space-y-4">
+          <div className="flex items-center gap-2 px-2 text-[10px] uppercase font-bold tracking-wider text-text-secondary dark:text-zinc-500">
+            <Link to="/legal" className="hover:text-text-primary dark:hover:text-white transition-colors">Legal & Privacy</Link>
+          </div>
           <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center text-xs font-bold text-white shadow-lg">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-purple-600 flex items-center justify-center text-xs font-bold text-text-primary dark:text-white shadow-lg">
               {user.email ? user.email[0].toUpperCase() : 'U'}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="text-xs font-medium text-white truncate">{user.email}</div>
-              <div className="text-[10px] text-zinc-500 uppercase font-semibold">{role === 'admin' ? 'Admin Authority' : 'Field Operator'}</div>
+              <div className="text-xs font-medium text-text-primary dark:text-white truncate">{user.email}</div>
+              <div className="text-[10px] text-text-secondary dark:text-zinc-500 uppercase font-semibold">{role === 'admin' ? 'Admin Authority' : 'Field Operator'}</div>
             </div>
-            <button onClick={handleLogout} className="p-1.5 text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all">
+            <button onClick={handleLogout} className="p-1.5 text-zinc-500 dark:text-zinc-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all">
               <LogOut className="w-4 h-4" />
             </button>
           </div>
@@ -191,15 +208,15 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative z-10">
         {/* Sticky Topbar */}
-        <header className="sticky top-0 z-40 h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8 bg-[#0A0A0A]/80 backdrop-blur-xl border-b border-white/5 shadow-sm">
+        <header className="sticky top-0 z-40 h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8 bg-background-primary dark:bg-[#0A0A0A]/80 backdrop-blur-xl border-b border-white/5 shadow-sm">
           <div className="flex items-center gap-4 lg:gap-8">
             <button
-              className="lg:hidden text-zinc-400 hover:text-white mr-2"
+              className="lg:hidden text-zinc-500 dark:text-zinc-400 hover:text-text-primary dark:text-white mr-2"
               onClick={() => setSidebarOpen(!sidebarOpen)}
             >
               <Menu className="h-6 w-6" />
             </button>
-            <h1 className="text-xs font-bold tracking-widest uppercase text-zinc-500 hidden sm:block">Predictive Risk Command</h1>
+            <h1 className="text-xs font-bold tracking-widest uppercase text-text-secondary dark:text-zinc-500 hidden sm:block">Predictive Risk Command</h1>
             <div className="h-4 w-px bg-white/10 hidden sm:block"></div>
             <div className="flex items-center gap-2 bg-red-500/10 px-2.5 py-1 rounded-full border border-red-500/20">
               <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
@@ -210,22 +227,29 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="flex-1 flex items-center justify-end gap-3 lg:gap-5">
             <div className="relative max-w-sm w-full hidden md:block">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-4 w-4 text-zinc-500" />
+                <Search className="h-4 w-4 text-text-secondary dark:text-zinc-500" />
               </div>
               <input
                 type="text"
                 placeholder="Search command center..."
-                className="block w-full pl-9 pr-3 py-1.5 border border-white/10 rounded-full bg-white/5 text-zinc-300 placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:border-blue-500/50 focus:bg-white/10 sm:text-xs transition-all"
+                className="block w-full pl-9 pr-3 py-1.5 border border-white/10 rounded-full bg-white/5 text-zinc-600 dark:text-zinc-300 placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:border-blue-500/50 focus:bg-white/10 sm:text-xs transition-all"
               />
             </div>
             
-            <div className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider hidden lg:block mr-2">Sync: <span className="text-emerald-400">Stable</span></div>
+            <div className="text-[10px] text-text-secondary dark:text-zinc-500 uppercase font-bold tracking-wider hidden lg:block mr-2">Sync: <span className="text-emerald-400">Stable</span></div>
             
+            <button 
+              onClick={toggleTheme}
+              className="p-2 text-zinc-500 dark:text-zinc-400 hover:text-text-primary dark:text-white hover:bg-white/5 rounded-full transition-all group"
+            >
+              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
+
             {/* Notifications Dropdown */}
             <div className="relative" ref={notificationRef}>
               <button 
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 text-zinc-400 hover:text-white hover:bg-white/5 rounded-full transition-all group"
+                className="relative p-2 text-zinc-500 dark:text-zinc-400 hover:text-text-primary dark:text-white hover:bg-white/5 rounded-full transition-all group"
               >
                 <Bell className="h-4 w-4 group-hover:scale-110 transition-transform" />
                 <span className="absolute top-1.5 right-1.5 block h-2 w-2 rounded-full bg-blue-500 ring-2 ring-[#0A0A0A]" />
@@ -238,11 +262,11 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    className="absolute right-0 mt-2 w-80 bg-[#111] border border-white/10 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-xl"
+                    className="absolute right-0 mt-2 w-80 bg-background-secondary dark:bg-[#111] border border-white/10 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-xl"
                   >
                     <div className="p-4 border-b border-white/10 flex items-center justify-between bg-white/5">
-                      <h3 className="text-xs font-bold text-white uppercase tracking-wider">Notifications</h3>
-                      <button onClick={() => setShowNotifications(false)} className="text-zinc-400 hover:text-white">
+                      <h3 className="text-xs font-bold text-text-primary dark:text-white uppercase tracking-wider">Notifications</h3>
+                      <button onClick={() => setShowNotifications(false)} className="text-zinc-500 dark:text-zinc-400 hover:text-text-primary dark:text-white">
                         <X className="w-4 h-4" />
                       </button>
                     </div>
@@ -251,8 +275,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         <div key={notif.id} className="p-4 border-b border-white/5 hover:bg-white/5 transition-colors flex gap-3 group cursor-pointer">
                           <div className={`mt-0.5 w-2 h-2 rounded-full flex-shrink-0 ${notif.type === 'alert' ? 'bg-red-500' : 'bg-emerald-500'}`} />
                           <div>
-                            <p className="text-xs text-zinc-300 group-hover:text-white transition-colors leading-relaxed">{notif.text}</p>
-                            <p className="text-[10px] text-zinc-500 mt-1">{notif.time}</p>
+                            <p className="text-xs text-zinc-600 dark:text-zinc-300 group-hover:text-text-primary dark:text-white transition-colors leading-relaxed">{notif.text}</p>
+                            <p className="text-[10px] text-text-secondary dark:text-zinc-500 mt-1">{notif.time}</p>
                           </div>
                         </div>
                       ))}
@@ -268,7 +292,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <button 
               onClick={handleExportPDF} 
               disabled={isExporting}
-              className="px-4 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-[11px] font-bold rounded-lg uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(37,99,235,0.3)] hover:shadow-[0_0_25px_rgba(37,99,235,0.5)] hidden sm:block disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-4 py-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-text-primary dark:text-white text-[11px] font-bold rounded-lg uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(37,99,235,0.3)] hover:shadow-[0_0_25px_rgba(37,99,235,0.5)] hidden sm:block disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isExporting ? 'Compiling PDF...' : 'Export PDF'}
             </button>
@@ -291,6 +315,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           </AnimatePresence>
         </main>
       </div>
+      <Chatbot />
     </div>
   );
 }

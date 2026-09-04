@@ -53,23 +53,23 @@ export default function ParcelMap({ parcel, allParcels }: { parcel?: Parcel, all
   }, []);
 
   if (!mounted || loadingKey) return (
-    <div className="w-full h-full flex items-center justify-center bg-[#0A0A0A]">
+    <div className="w-full h-full flex items-center justify-center bg-background-primary dark:bg-[#0A0A0A]">
       <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
     </div>
   );
 
   if (!apiKey) {
     return (
-      <div className="w-full h-full flex flex-col items-center justify-center bg-[#0A0A0A] border border-zinc-800 p-6 text-center rounded-xl">
-        <h3 className="text-white font-medium mb-2">Google Maps API Key Required</h3>
-        <p className="text-sm text-zinc-400 mb-4 max-w-md">
+      <div className="w-full h-full flex flex-col items-center justify-center bg-background-primary dark:bg-[#0A0A0A] border border-border-subtle dark:border-zinc-800 p-6 text-center rounded-xl">
+        <h3 className="text-text-primary dark:text-white font-medium mb-2">Google Maps API Key Required</h3>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4 max-w-md">
           Please add <code>VITE_GOOGLE_MAPS_API_KEY</code> to your environment secrets to enable the interactive map.
         </p>
         <a 
           href="https://mapsplatform.google.com/maps-demo-key?utm_campaign=gmp_mcp_codeassist_v1_aistudio"
           target="_blank" 
           rel="noopener noreferrer"
-          className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-4 rounded"
+          className="bg-blue-600 hover:bg-blue-700 text-text-primary dark:text-white text-xs font-bold py-2 px-4 rounded"
         >
           Get a Free Maps Demo Key
         </a>

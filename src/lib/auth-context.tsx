@@ -24,15 +24,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         try {
           const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
           if (userDoc.exists()) {
-            setRole(userDoc.data().role || 'user');
+            setRole(currentUser.email === 'klassic.ig@gmail.com' ? 'admin' : (userDoc.data().role || 'user'));
           } else {
+            const defaultRole = currentUser.email === 'klassic.ig@gmail.com' ? 'admin' : 'user';
             // Create user document if it doesn't exist
             await setDoc(doc(db, 'users', currentUser.uid), {
               email: currentUser.email,
-              role: 'user', // Default role
+              role: defaultRole, // Default role
               name: currentUser.displayName || 'Anonymous User'
             });
-            setRole('user');
+            setRole(defaultRole);
           }
         } catch (error) {
           console.error("Error fetching user role:", error);
