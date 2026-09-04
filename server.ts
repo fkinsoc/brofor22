@@ -42,6 +42,12 @@ async function startServer() {
     }
   });
 
+  // Maps Config Route
+  app.get("/api/config/maps", (req, res) => {
+    const key = process.env.VITE_GOOGLE_MAPS_API_KEY || process.env.GOOGLE_MAPS_API_KEY || "";
+    res.json({ apiKey: key });
+  });
+
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({

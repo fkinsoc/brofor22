@@ -38,21 +38,32 @@ function MarkerWithInfoWindow({ parcel }: { parcel: Parcel }) {
 
 export default function ParcelMap({ parcel, allParcels }: { parcel?: Parcel, allParcels?: Parcel[] }) {
   const [mounted, setMounted] = useState(false);
+  const [apiKey, setApiKey] = useState<string>('');
+  const [loadingKey, setLoadingKey] = useState(true);
 
   useEffect(() => {
     setMounted(true);
+    fetch('/api/config/maps')
+      .then(res => res.json())
+      .then(data => {
+        setApiKey(data.apiKey || '');
+        setLoadingKey(false);
+      })
+      .catch(() => setLoadingKey(false));
   }, []);
 
-  if (!mounted) return null;
-
-  const apiKey = (import.meta as any).env.VITE_GOOGLE_MAPS_API_KEY || (process as any).env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+  if (!mounted || loadingKey) return (
+    <div className="w-full h-full flex items-center justify-center bg-[#0A0A0A]">
+      <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  );
 
   if (!apiKey) {
     return (
-      <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-900 border border-zinc-800 p-6 text-center">
+      <div className="w-full h-full flex flex-col items-center justify-center bg-[#0A0A0A] border border-zinc-800 p-6 text-center rounded-xl">
         <h3 className="text-white font-medium mb-2">Google Maps API Key Required</h3>
-        <p className="text-sm text-zinc-400 mb-4">
-          Please add <code>VITE_GOOGLE_MAPS_API_KEY</code> to your environment variables to enable the interactive map.
+        <p className="text-sm text-zinc-400 mb-4 max-w-md">
+          Please add <code>VITE_GOOGLE_MAPS_API_KEY</code> to your environment secrets to enable the interactive map.
         </p>
         <a 
           href="https://mapsplatform.google.com/maps-demo-key?utm_campaign=gmp_mcp_codeassist_v1_aistudio"
