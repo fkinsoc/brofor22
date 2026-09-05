@@ -9,7 +9,11 @@ interface AuthContextType {
   loading: boolean;
 }
 
-const AuthContext = createContext<AuthContextType>({ user: null, role: null, loading: true });
+const AuthContext = createContext<AuthContextType>({
+  user: null,
+  role: null,
+  loading: true
+});
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -20,8 +24,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        // Fetch role from Firestore
         try {
+          // Fetch role from Firestore
           const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
           if (userDoc.exists()) {
             setRole(currentUser.email === 'klassic.ig@gmail.com' ? 'admin' : (userDoc.data().role || 'user'));
@@ -30,7 +34,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             // Create user document if it doesn't exist
             await setDoc(doc(db, 'users', currentUser.uid), {
               email: currentUser.email,
-              role: defaultRole, // Default role
+              role: defaultRole,
               name: currentUser.displayName || 'Anonymous User'
             });
             setRole(defaultRole);
